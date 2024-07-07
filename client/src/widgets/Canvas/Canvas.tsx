@@ -1,7 +1,7 @@
 import { type FC, memo, useEffect, useRef } from 'react';
 import module from './Canvas.module.scss';
 import { Tool } from 'entities/Tool';
-import { Brush, usePainting } from 'features/Painting';
+import { Brush, Rectangle, usePainting } from 'features/Painting';
 
 export const Canvas: FC = memo(() => {
   const currentTool = usePainting(state => state.currentTool);
@@ -14,6 +14,9 @@ export const Canvas: FC = memo(() => {
       switch (currentTool) {
         case 'brush':
           new Brush(canvas)
+          break;
+        case 'rectangle':
+          new Rectangle(canvas)
           break;
         default:
           new Tool(canvas)

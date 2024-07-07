@@ -1,4 +1,4 @@
-import { type FC, memo, ReactElement, useCallback } from 'react';
+import { type FC, memo, MouseEventHandler, ReactElement, useCallback } from 'react';
 import module from './Header.module.scss';
 import { Brush, Circle, Eraser, Rectangle, Redo, Save, Undo } from 'shared/assets/icons';
 import { Button } from 'shared/ui/Button';
@@ -23,22 +23,25 @@ export const Header: FC = memo(() => {
   const currentTool = usePainting(state => state.currentTool);
   const setCurrentTool = usePainting(state => state.setCurrentTool);
   
-  const currentToolHandler = (tool: Tools): void => {
+  const handleToolChange: MouseEventHandler<HTMLButtonElement> = useCallback((event ) => {
+    const tool = event.currentTarget.dataset.key as Tools;
+    
     if (isPaintingTool(tool)) {
       setCurrentTool(tool);
     }
-  };
+  }, [setCurrentTool]);
   
   return (
     <header className={ module.Header }>
       <div className={ module.Panel }>
         { Object.entries(tools).map(([key, icon]: [Tools, ReactElement]) => (
           <Button
+            data-key={ key }
             key={ key }
             icon
             isActive={key === currentTool}
             className={ module[key] }
-            onClick={ useCallback(() => currentToolHandler(key), [key]) }>
+            onClick={handleToolChange}>
             { icon }
           </Button>
         )) }

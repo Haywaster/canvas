@@ -9,29 +9,29 @@ export class Brush extends Tool {
   }
   
   listen(): void {
-    this.canvas.onmousemove = this.mouseMoveHandler.bind(this);
-    this.canvas.onmousedown = this.mouseDownHandler.bind(this);
-    this.canvas.onmouseup = this.mouseUpHandler.bind(this);
+    this.canvas.onmousedown = (event: MouseEvent): void => {
+      this.down = true;
+      this.context.beginPath();
+      const x = event.clientX - this.canvas.offsetLeft;
+      const y = event.clientY - this.canvas.offsetTop;
+      this.context.moveTo(x, y);
+    };
+    
+    this.canvas.onmouseup = (): void => {
+      this.down = false;
+    };
+    
+    this.canvas.onmousemove = (event: MouseEvent): void => {
+      if (this.down) {
+        const x = event.pageX - this.canvas.offsetLeft;
+        const y = event.pageY - this.canvas.offsetTop;
+        this.draw(x, y);
+      }
+    };
   }
   
-  mouseUpHandler(): void {
-    this.down = false;
-  }
-  
-  mouseDownHandler(event): void {
-    this.down = true;
-    this.context.beginPath();
-    const x = event.clientX - this.canvas.offsetLeft;
-    const y = event.clientY - this.canvas.offsetTop;
-    this.context.moveTo(x, y);
-  }
-  
-  mouseMoveHandler(event): void {
-    if (this.down) {
-      const x = event.pageX - this.canvas.offsetLeft;
-      const y = event.pageY - this.canvas.offsetTop;
-      this.context.lineTo(x, y);
-      this.context.stroke();
-    }
+  draw(x: number, y: number): void {
+    this.context.lineTo(x, y);
+    this.context.stroke();
   }
 }
