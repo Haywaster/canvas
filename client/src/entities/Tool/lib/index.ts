@@ -1,0 +1,1 @@
+export {isPaintingTool} from './isPaintingTool.ts'

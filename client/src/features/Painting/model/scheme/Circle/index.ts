@@ -1,13 +1,12 @@
 import { Shape } from 'entities/Tool';
 
-export class Rectangle extends Shape {
+export class Circle extends Shape {
   draw(x: number, y: number): void {
-    const width = x - this.startX;
-    const height = y - this.startY;
+    const radius = Math.sqrt((x - this.startX) ** 2 + (y - this.startY) ** 2);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.drawImage(this.img, 0, 0, this.canvas.width, this.canvas.height);
     this.context.beginPath();
-    this.context.rect(this.startX, this.startY, width, height);
+    this.context.arc(this.startX, this.startY, radius, 0, Math.PI * 2);
     this.context.fill();
     this.context.stroke();
   }

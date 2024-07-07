@@ -1,2 +1,4 @@
-export type Tools = 'brush' | 'rectangle' | 'circle' | 'eraser' | 'undo' | 'redo' | 'save'
-export type PaintingTools = Extract<Tools, 'brush' | 'rectangle' | 'circle' | 'eraser'>
+import { paintingTools, tools } from '../const';
+
+export type Tools = typeof tools[number]
+export type PaintingTools = typeof paintingTools[number]
