@@ -1,4 +1,4 @@
-import { type FC, memo, ReactElement } from 'react';
+import { type FC, memo, ReactElement, useCallback } from 'react';
 import module from './Header.module.scss';
 import { Brush, Circle, Eraser, Rectangle, Redo, Save, Undo } from 'shared/assets/icons';
 import { Button } from 'shared/ui/Button';
@@ -20,7 +20,8 @@ const isPaintingTool = (tool: Tools): tool is PaintingTools => {
 };
 
 export const Header: FC = memo(() => {
-  const { currentTool, setCurrentTool } = usePainting();
+  const currentTool = usePainting(state => state.currentTool);
+  const setCurrentTool = usePainting(state => state.setCurrentTool);
   
   const currentToolHandler = (tool: Tools): void => {
     if (isPaintingTool(tool)) {
@@ -37,7 +38,7 @@ export const Header: FC = memo(() => {
             icon
             isActive={key === currentTool}
             className={ module[key] }
-            onClick={ () => currentToolHandler(key) }>
+            onClick={ useCallback(() => currentToolHandler(key), [key]) }>
             { icon }
           </Button>
         )) }

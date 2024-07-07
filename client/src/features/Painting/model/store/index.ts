@@ -1,0 +1,1 @@
+export { usePainting } from './usePainting.ts';

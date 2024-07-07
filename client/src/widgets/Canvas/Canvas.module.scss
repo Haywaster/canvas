@@ -1,3 +1,13 @@
-.Canvas {
+.Wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 1;
+}
 
+.Canvas {
+  cursor: crosshair;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
 }
