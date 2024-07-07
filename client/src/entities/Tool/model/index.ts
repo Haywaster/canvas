@@ -1,3 +1,3 @@
 export * from './types'
 export * from './scheme'
-export * from './conts'
+export * from './const'

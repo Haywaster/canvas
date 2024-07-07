@@ -1,8 +1,8 @@
-export class Tool {
+export abstract class Tool {
   protected canvas: HTMLCanvasElement;
   protected context: CanvasRenderingContext2D;
   
-  constructor(canvas: HTMLCanvasElement) {
+  protected constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     this.context = canvas.getContext('2d');
     this.destroy();

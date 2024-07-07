@@ -1,6 +1,6 @@
 import { Tool } from './Tool.ts';
 
-export class Shape extends Tool {
+export abstract class Shape extends Tool {
   protected down = false;
   protected saved: string;
   protected startX = 0;
@@ -34,5 +34,5 @@ export class Shape extends Tool {
     };
   }
   
-  protected draw(x: number, y: number): void {}
+  protected abstract draw(x: number, y: number): void
 }

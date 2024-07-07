@@ -1,9 +1,9 @@
 import { Tool } from 'entities/Tool';
 
-export class DrawingTool extends Tool {
+export abstract class DrawingTool extends Tool {
   private down: boolean;
   
-  constructor(canvas) {
+  protected constructor(canvas) {
     super(canvas);
     this.listen();
   }
@@ -30,7 +30,7 @@ export class DrawingTool extends Tool {
     };
   }
   
-  protected startDrawing(x: number, y: number): void {}
+  protected abstract startDrawing(x: number, y: number): void
 
-  protected draw(x: number, y: number): void {}
+  protected abstract draw(x: number, y: number): void
 }
