@@ -7,8 +7,8 @@ interface IProps {
 
 export const Canvas: FC<IProps> = memo(() => {
   return (
-    <div className={ module.Canvas }>
+    <main className={ module.Canvas }>
       Hello
-    </div>
+    </main>
   );
 });
