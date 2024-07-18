@@ -1,17 +1,17 @@
-import { Tool } from './Tool.ts';
+import { Tool } from './Tool';
 
 export abstract class Shape extends Tool {
-  protected down = false;
-  protected saved: string;
+  protected down: boolean = false;
+  protected saved: string | undefined;
   protected startX = 0;
   protected startY = 0;
   protected img = new Image();
-  
+
   constructor(canvas: HTMLCanvasElement) {
     super(canvas);
     this.listen();
   }
-  
+
   private listen(): void {
     this.canvas.onmousedown = (event: MouseEvent): void => {
       this.down = true;
@@ -20,11 +20,11 @@ export abstract class Shape extends Tool {
       this.saved = this.canvas.toDataURL();
       this.img.src = this.saved;
     };
-    
+
     this.canvas.onmouseup = (): void => {
       this.down = false;
     };
-    
+
     this.canvas.onmousemove = (event: MouseEvent): void => {
       if (this.down) {
         const currentX = event.clientX - this.canvas.offsetLeft;
@@ -33,6 +33,6 @@ export abstract class Shape extends Tool {
       }
     };
   }
-  
-  protected abstract draw(x: number, y: number): void
+
+  protected abstract draw(x: number, y: number): void;
 }

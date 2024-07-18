@@ -1,1 +1,1 @@
-export {isPaintingTool} from './isPaintingTool.ts'
+export { isPaintingTool } from './isPaintingTool';

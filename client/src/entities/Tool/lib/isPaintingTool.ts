@@ -1,3 +1,5 @@
-import { paintingTools, PaintingTools, Tools } from '../model';
+import type { PaintingTools, Tools } from '../model';
+import { paintingTools } from '../model';
 
-export const isPaintingTool = (tool: Tools): tool is PaintingTools => paintingTools.includes(tool);
+export const isPaintingTool = (tool: Tools): tool is PaintingTools =>
+  paintingTools.includes(tool);

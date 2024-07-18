@@ -1,9 +1,11 @@
-import { ButtonHTMLAttributes, type FC, memo, ReactElement } from 'react';
-import module from './Button.module.scss';
 import classNames from 'classnames';
+import type { ButtonHTMLAttributes, ReactElement, FC } from 'react';
+import { memo } from 'react';
 
-type BtnSize = 'lg' | 'sm' | 'xs'
-type BtnMode = 'primary' | 'secondary' | 'outline' | 'ghost'
+import module from './Button.module.scss';
+
+type BtnSize = 'lg' | 'sm' | 'xs';
+type BtnMode = 'primary' | 'secondary' | 'outline' | 'ghost';
 
 interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isActive?: boolean;
@@ -13,7 +15,7 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactElement;
 }
 
-export const Button: FC<IProps> = memo<IProps>((props) => {
+export const Button: FC<IProps> = memo(props => {
   const {
     icon,
     children,
@@ -24,17 +26,16 @@ export const Button: FC<IProps> = memo<IProps>((props) => {
     type = 'button',
     ...rest
   } = props;
-  
-  const clazz = classNames(module.Button,
+
+  const clazz = classNames(
+    module.Button,
     { [module.Icon]: icon, [module.Active]: isActive },
-    [module[size], module[mode], className]);
-  
+    [module[size], module[mode], className]
+  );
+
   return (
-    <button
-      type={ type as ButtonHTMLAttributes<HTMLButtonElement>['type'] }
-      className={ clazz }
-      { ...rest }>
-      { children }
+    <button type={type} className={clazz} {...rest}>
+      {children}
     </button>
   );
 });

@@ -1,13 +1,9 @@
-import { Main as MainPage } from 'pages/Main/Main.tsx';
-
-enum RouterPage {
-  Main = MainPage,
-}
+import { Main as MainPage } from 'pages/Main/Main';
 
 enum RouterPath {
-  Main = '/',
+  Main = '/'
 }
 
 export const AppRouter = {
-  [RouterPath.Main]: RouterPage.Main,
+  [RouterPath.Main]: MainPage
 };

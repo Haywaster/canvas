@@ -1,1 +1,1 @@
-export { usePainting } from './usePainting.ts';
+export { usePainting } from './usePainting';

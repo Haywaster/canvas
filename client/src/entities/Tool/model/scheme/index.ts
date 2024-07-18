@@ -1,3 +1,3 @@
-export { Tool } from './Tool.ts';
-export { Shape } from './Shape.ts';
-export { DrawingTool } from './DrawingTool.ts';
+export { Tool } from './Tool';
+export { Shape } from './Shape';
+export { DrawingTool } from './DrawingTool';
