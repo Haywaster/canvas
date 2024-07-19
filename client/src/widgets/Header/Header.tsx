@@ -16,6 +16,7 @@ import {
 import { Button } from 'shared/ui/Button';
 
 import module from './Header.module.scss';
+import { ucFirst } from 'shared/lib/ucFirst.ts';
 
 const headerTools: Record<Tools, ReactElement> = {
   brush: <Brush />,
@@ -44,22 +45,22 @@ export const Header: FC = memo(() => {
   );
 
   return (
-    <header className={module.Header}>
-      <div className={module.Panel}>
+    <header className={module.header}>
+      <div className={module.panel}>
         {Object.entries(headerTools).map(([key, icon]) => (
           <Button
             data-key={key}
             key={key}
             icon
             isActive={key === currentTool}
-            className={module[key]}
+            className={ucFirst(module[key])}
             onClick={handleToolChange}
           >
             {icon}
           </Button>
         ))}
       </div>
-      <div className={module.Panel}>
+      <div className={module.panel}>
         <input type='color' />
       </div>
     </header>

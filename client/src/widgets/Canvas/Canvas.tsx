@@ -17,10 +17,10 @@ export const Canvas: FC = memo(() => {
   }, [currentTool]);
 
   return (
-    <main className={module.Wrapper}>
+    <main className={module.wrapper}>
       <canvas
         ref={canvasRef}
-        className={module.Canvas}
+        className={module.canvas}
         width={600}
         height={400}
       />

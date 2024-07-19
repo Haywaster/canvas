@@ -28,8 +28,8 @@ export const Button: FC<IProps> = memo(props => {
   } = props;
 
   const clazz = classNames(
-    module.Button,
-    { [module.Icon]: icon, [module.Active]: isActive },
+    module.button,
+    { [module.icon]: icon, [module.active]: isActive },
     [module[size], module[mode], className]
   );
 
