@@ -5,26 +5,28 @@ import pluginReact from 'eslint-plugin-react';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
 import prettierPlugin from 'eslint-config-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import reactRefresh from "eslint-plugin-react-refresh";
+import reactRefresh from 'eslint-plugin-react-refresh';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default [
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.strict,
   eslintConfigPrettier,
 
   {
     files: ['**/*.{js,ts,jsx,tsx}'],
     ignores: ['dist', 'node_modules', 'eslint.config.js'],
     plugins: {
-      "react": pluginReact,
-      "react-hooks": pluginReactHooks,
+      react: pluginReact,
+      'react-hooks': pluginReactHooks,
       prettier: prettierPlugin,
-      "react-refresh": reactRefresh,
+      'react-refresh': reactRefresh,
+      'unused-imports': unusedImports
     },
     languageOptions: {
       parserOptions: {
         ecmaFeatures: { jsx: true },
-        project: ['tsconfig.app.json', 'tsconfig.node.json'],
+        project: ['tsconfig.app.json', 'tsconfig.node.json']
       },
       globals: {
         ...globals.browser,
@@ -34,30 +36,50 @@ export default [
     },
     settings: {
       react: {
-        version: 'detect',
-      },
+        version: 'detect'
+      }
     },
     rules: {
-      "react-refresh/only-export-components": ['warn', { allowConstantExport: true }],
-      'react/jsx-curly-brace-presence': ['warn', { props: 'never', children: 'never' }],
-      'react/function-component-definition': ['warn', { namedComponents: 'arrow-function' }],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true }
+      ],
+      'react/jsx-curly-brace-presence': [
+        'warn',
+        { props: 'never', children: 'never' }
+      ],
+      'react/function-component-definition': [
+        'warn',
+        { namedComponents: 'arrow-function' }
+      ],
       'react/self-closing-comp': ['error', { component: true, html: true }],
       'max-lines': ['warn', { max: 124 }],
       'max-params': ['error', 3],
       '@typescript-eslint/consistent-type-imports': [
         'warn',
-        { prefer: 'type-imports', fixStyle: 'separate-type-imports' },
+        { prefer: 'type-imports', fixStyle: 'separate-type-imports' }
       ],
       '@typescript-eslint/no-misused-promises': [
         'error',
-        { checksVoidReturn: { attributes: false } },
+        { checksVoidReturn: { attributes: false } }
       ],
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
         {
-          allowConstantLoopConditions: true,
-        },
+          allowConstantLoopConditions: true
+        }
       ],
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_'
+        }
+      ]
     }
   }
 ];

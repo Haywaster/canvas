@@ -8,7 +8,8 @@ const routerArr: RouteObject[] = Object.entries(AppRouter).map(
   ([path, Component]) => ({ path, element: <Component /> })
 );
 const router = createBrowserRouter(routerArr);
+const rootElement = document.getElementById('root');
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router} />
-);
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(<RouterProvider router={router} />);
+}

@@ -3,7 +3,7 @@ import { Tool } from 'entities/Tool';
 export abstract class DrawingTool extends Tool {
   private down: boolean | undefined;
 
-  protected constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement) {
     super(canvas);
     this.listen();
   }
@@ -11,7 +11,7 @@ export abstract class DrawingTool extends Tool {
   private listen(): void {
     this.canvas.onmousedown = (event: MouseEvent): void => {
       this.down = true;
-      this.context.beginPath();
+      this.context?.beginPath();
       const x = event.clientX - this.canvas.offsetLeft;
       const y = event.clientY - this.canvas.offsetTop;
       this.startDrawing(x, y);
