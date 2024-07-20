@@ -9,8 +9,6 @@ export const tools = [
   'save'
 ] as const;
 
-export const inputTools = ['strokeColor', 'fillColor', 'strokeWidth'] as const;
-
 export const paintingTools = [
   'brush',
   'line',

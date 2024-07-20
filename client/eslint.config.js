@@ -7,6 +7,7 @@ import prettierPlugin from 'eslint-config-prettier';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import unusedImports from 'eslint-plugin-unused-imports';
+import { fixupPluginRules } from '@eslint/compat';
 
 export default [
   js.configs.recommended,
@@ -18,7 +19,7 @@ export default [
     ignores: ['dist', 'node_modules', 'eslint.config.js'],
     plugins: {
       react: pluginReact,
-      'react-hooks': pluginReactHooks,
+      'react-hooks': fixupPluginRules(pluginReactHooks),
       prettier: prettierPlugin,
       'react-refresh': reactRefresh,
       'unused-imports': unusedImports
@@ -40,6 +41,7 @@ export default [
       }
     },
     rules: {
+      ...pluginReactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }

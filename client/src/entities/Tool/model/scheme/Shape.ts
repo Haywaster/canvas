@@ -1,4 +1,5 @@
 import { Tool } from './Tool';
+import type { PaintingOptions } from 'entities/Tool';
 
 export abstract class Shape extends Tool {
   protected down: boolean = false;
@@ -7,8 +8,8 @@ export abstract class Shape extends Tool {
   protected startY = 0;
   protected img = new Image();
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, options: PaintingOptions) {
+    super(canvas, options);
     this.listen();
   }
 

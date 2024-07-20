@@ -1,10 +1,11 @@
+import type { PaintingOptions } from 'entities/Tool';
 import { Tool } from 'entities/Tool';
 
 export abstract class DrawingTool extends Tool {
   private down: boolean | undefined;
 
-  constructor(canvas: HTMLCanvasElement) {
-    super(canvas);
+  constructor(canvas: HTMLCanvasElement, options: PaintingOptions) {
+    super(canvas, options);
     this.listen();
   }
 

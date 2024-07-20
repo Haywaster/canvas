@@ -6,7 +6,10 @@ export class Brush extends DrawingTool {
   }
 
   draw(x: number, y: number): void {
-    this.context?.lineTo(x, y);
-    this.context?.stroke();
+    if (this.context) {
+      this.context.lineTo(x, y);
+      this.context.stroke();
+      this.context.strokeStyle = this.strokeColor;
+    }
   }
 }

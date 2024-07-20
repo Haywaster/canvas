@@ -5,6 +5,8 @@ import module from './Canvas.module.scss';
 
 export const Canvas: FC = memo(() => {
   const currentTool = usePainting(state => state.currentTool);
+  const options = usePainting(state => state.options);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -12,9 +14,9 @@ export const Canvas: FC = memo(() => {
 
     if (canvas) {
       const ClassToCreate = canvasTools[currentTool];
-      new ClassToCreate(canvas);
+      new ClassToCreate(canvas, options);
     }
-  }, [currentTool]);
+  }, [currentTool, options]);
 
   return (
     <main className={module.wrapper}>

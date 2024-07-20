@@ -1,4 +1,4 @@
-import type { InputTool, InputTools, Tools } from 'entities/Tool';
+import type { InputTool, PaintingOptions, Tools } from 'entities/Tool';
 import { isPaintingTool } from 'entities/Tool';
 import { usePainting } from 'features/Painting';
 import type { MouseEventHandler, ReactElement, FC } from 'react';
@@ -31,15 +31,15 @@ const headerTools: Record<Tools, ReactElement> = {
 
 const tools = Object.entries(headerTools) as [Tools, ReactElement][];
 
-const inputTools: InputTool[] = [
+const paintingOptions: InputTool[] = [
   { id: 'strokeColor', label: 'Обводка', type: 'color' },
   { id: 'fillColor', label: 'Заливка', type: 'color' },
   {
     id: 'strokeWidth',
     label: 'Толщина',
     type: 'range',
-    max: '10',
-    min: '1'
+    min: '1',
+    max: '10'
   }
 ];
 
@@ -50,20 +50,8 @@ export const Header: FC = memo(() => {
       setCurrentTool
     }))
   );
-  const { fillColor, setFillColor } = usePainting(
-    useShallow(({ fillColor, setFillColor }) => ({ fillColor, setFillColor }))
-  );
-  const { strokeColor, setStrokeColor } = usePainting(
-    useShallow(({ strokeColor, setStrokeColor }) => ({
-      strokeColor,
-      setStrokeColor
-    }))
-  );
-  const { strokeWidth, setStrokeWidth } = usePainting(
-    useShallow(({ strokeWidth, setStrokeWidth }) => ({
-      strokeWidth,
-      setStrokeWidth
-    }))
+  const { options, setOptions } = usePainting(
+    useShallow(({ options, setOptions }) => ({ options, setOptions }))
   );
 
   const handleToolChange: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -79,31 +67,7 @@ export const Header: FC = memo(() => {
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { id, value } = event.target;
-
-    switch (id) {
-      case 'strokeColor':
-        setStrokeColor(value);
-        break;
-      case 'fillColor':
-        setFillColor(value);
-        break;
-      case 'strokeWidth':
-        setStrokeWidth(Number(value));
-        break;
-    }
-  };
-
-  const getInputValue = (id: InputTools): string => {
-    switch (id) {
-      case 'strokeColor':
-        return strokeColor;
-      case 'fillColor':
-        return fillColor;
-      case 'strokeWidth':
-        return String(strokeWidth);
-      default:
-        return '';
-    }
+    setOptions(id as keyof PaintingOptions, value);
   };
 
   return (
@@ -123,14 +87,14 @@ export const Header: FC = memo(() => {
         ))}
       </div>
       <div className={module.panel}>
-        {inputTools.map(({ id, label, type, max, min }) => (
+        {paintingOptions.map(({ id, label, type, max, min }) => (
           <div key={id}>
             <label htmlFor={id}>{label}</label>
             <input
               onChange={changeHandler}
               id={id}
               type={type}
-              value={getInputValue(id)}
+              value={options[id]}
               max={max}
               min={min}
             />
