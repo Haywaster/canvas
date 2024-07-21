@@ -17,6 +17,8 @@ export class Rectangle extends Shape {
       this.context.beginPath();
       this.context.rect(this.startX, this.startY, width, height);
       this.context.strokeStyle = this.strokeColor;
+      this.context.fillStyle = this.fillColor;
+      this.context.lineWidth = this.strokeWidth;
       this.context.fill();
       this.context.stroke();
     }

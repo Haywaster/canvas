@@ -13,6 +13,7 @@ export abstract class Tool {
     this.strokeColor = options.strokeColor;
     this.strokeWidth = options.strokeWidth;
     this.fillColor = options.fillColor;
+    console.log(options);
     this.destroy();
   }
 

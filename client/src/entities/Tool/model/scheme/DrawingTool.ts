@@ -10,6 +10,11 @@ export abstract class DrawingTool extends Tool {
   }
 
   private listen(): void {
+    if (this.context) {
+      this.context.strokeStyle = this.strokeColor;
+      this.context.lineWidth = this.strokeWidth;
+    }
+
     this.canvas.onmousedown = (event: MouseEvent): void => {
       this.down = true;
       this.context?.beginPath();
@@ -33,5 +38,10 @@ export abstract class DrawingTool extends Tool {
 
   protected abstract startDrawing(x: number, y: number): void;
 
-  protected abstract draw(x: number, y: number): void;
+  protected draw(x: number, y: number): void {
+    if (this.context) {
+      this.context.lineTo(x, y);
+      this.context.stroke();
+    }
+  }
 }

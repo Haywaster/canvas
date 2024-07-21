@@ -18,18 +18,22 @@ export class Line extends DrawingTool {
     if (this.saved) {
       img.src = this.saved;
       img.onload = (): void => {
-        this.context?.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context?.drawImage(
-          img,
-          0,
-          0,
-          this.canvas.width,
-          this.canvas.height
-        );
-        this.context?.beginPath();
-        this.context?.moveTo(this.startX, this.startY);
-        this.context?.lineTo(x, y);
-        this.context?.stroke();
+        if (this.context) {
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.context.drawImage(
+            img,
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+          );
+          this.context.beginPath();
+          this.context.moveTo(this.startX, this.startY);
+          this.context.lineTo(x, y);
+          this.context.stroke();
+          this.context.strokeStyle = this.strokeColor;
+          this.context.lineWidth = this.strokeWidth;
+        }
       };
     }
   }

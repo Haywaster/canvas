@@ -9,9 +9,9 @@ interface IPaintingStore {
 }
 
 const defaultOptions: PaintingOptions = {
-  strokeColor: '#000',
+  strokeColor: '#000000',
   strokeWidth: 1,
-  fillColor: '#fff'
+  fillColor: '#ffffff'
 };
 
 export const usePainting = create<IPaintingStore>(set => ({
