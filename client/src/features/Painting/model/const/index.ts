@@ -1,8 +1,8 @@
-import { Brush, Circle, ClearAll, Eraser, Line, Rectangle } from '../scheme';
-import type { ToolClasses, ActionClasses } from '../types';
+import { Brush, Circle, Eraser, Line, Rectangle } from '../scheme';
+import type { ActionClasses, ToolClasses } from '../types';
+import { Canvas } from 'entities/Tool';
 
 export const toolsClasses = [Brush, Circle, Eraser, Line, Rectangle] as const;
-export const actionClasses = [ClearAll] as const;
 
 export const canvasTools: ToolClasses = {
   brush: Brush,
@@ -13,5 +13,5 @@ export const canvasTools: ToolClasses = {
 };
 
 export const canvasActions: Pick<ActionClasses, 'clearAll'> = {
-  clearAll: ClearAll
+  clearAll: Canvas.prototype.clearAll
 };
