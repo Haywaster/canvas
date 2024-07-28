@@ -1,4 +1,4 @@
-import { Main as MainPage } from 'pages/Main/Main';
+import { Main as MainPage } from 'pages/Main';
 
 enum RouterPath {
   Main = '/'

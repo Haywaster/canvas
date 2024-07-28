@@ -1,13 +1,5 @@
-import type { Brush, Circle, Eraser, Line, Rectangle } from '../scheme';
-import type { PaintingOptions } from 'entities/Tool';
+import type { ActionTools, PaintingTools } from 'entities/Tool';
+import type { toolsClasses, actionClasses } from '../const';
 
-export interface ToolClasses {
-  brush: new (canvas: HTMLCanvasElement, options: PaintingOptions) => Brush;
-  line: new (canvas: HTMLCanvasElement, options: PaintingOptions) => Line;
-  rectangle: new (
-    canvas: HTMLCanvasElement,
-    options: PaintingOptions
-  ) => Rectangle;
-  circle: new (canvas: HTMLCanvasElement, options: PaintingOptions) => Circle;
-  eraser: new (canvas: HTMLCanvasElement, options: PaintingOptions) => Eraser;
-}
+export type ToolClasses = Record<PaintingTools, (typeof toolsClasses)[number]>;
+export type ActionClasses = Record<ActionTools, (typeof actionClasses)[number]>;

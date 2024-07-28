@@ -1,8 +1,9 @@
-import type { paintingTools, tools } from '../const';
+import type { paintingTools, actionTools } from '../const';
 import type { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
 
-export type Tools = (typeof tools)[number];
+export type ActionTools = (typeof actionTools)[number];
 export type PaintingTools = (typeof paintingTools)[number];
+export type Tools = ActionTools | PaintingTools;
 
 export interface PaintingOptions {
   strokeColor: string;

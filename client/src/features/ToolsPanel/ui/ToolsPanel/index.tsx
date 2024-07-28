@@ -33,10 +33,11 @@ const headerTools: Record<Tools, ReactElement> = {
 const tools = Object.entries(headerTools) as [Tools, ReactElement][];
 
 export const ToolsPanel: FC = memo(() => {
-  const { currentTool, setCurrentTool } = usePainting(
-    useShallow(({ currentTool, setCurrentTool }) => ({
+  const { currentTool, setCurrentTool, makeAction } = usePainting(
+    useShallow(({ currentTool, setCurrentTool, makeAction }) => ({
       currentTool,
-      setCurrentTool
+      setCurrentTool,
+      makeAction
     }))
   );
 
@@ -47,10 +48,10 @@ export const ToolsPanel: FC = memo(() => {
       if (isPaintingTool(tool)) {
         setCurrentTool(tool);
       } else {
-        console.log(tool);
+        makeAction(tool);
       }
     },
-    [setCurrentTool]
+    [makeAction, setCurrentTool]
   );
 
   return (

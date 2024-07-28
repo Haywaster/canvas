@@ -1,15 +1,3 @@
-export const tools = [
-  'brush',
-  'line',
-  'rectangle',
-  'circle',
-  'eraser',
-  'undo',
-  'redo',
-  'save',
-  'clearAll'
-] as const;
-
 export const paintingTools = [
   'brush',
   'line',
@@ -17,3 +5,5 @@ export const paintingTools = [
   'circle',
   'eraser'
 ] as const;
+
+export const actionTools = ['undo', 'redo', 'save', 'clearAll'] as const;

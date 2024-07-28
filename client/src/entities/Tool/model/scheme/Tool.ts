@@ -1,19 +1,16 @@
 import type { PaintingOptions } from 'entities/Tool';
+import { Canvas } from './Canvas.ts';
 
-export abstract class Tool {
-  protected canvas: HTMLCanvasElement;
-  protected context: CanvasRenderingContext2D | null;
+export abstract class Tool extends Canvas {
   protected strokeColor: string;
   protected strokeWidth: number;
   protected fillColor: string;
 
   protected constructor(canvas: HTMLCanvasElement, options: PaintingOptions) {
-    this.canvas = canvas;
-    this.context = canvas.getContext('2d');
+    super(canvas);
     this.strokeColor = options.strokeColor;
     this.strokeWidth = options.strokeWidth;
     this.fillColor = options.fillColor;
-    console.log(options);
     this.destroy();
   }
 
