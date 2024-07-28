@@ -42,6 +42,7 @@ export default [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
+      'no-console': 'error',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true }
