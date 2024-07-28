@@ -8,6 +8,8 @@ import { create } from 'zustand';
 import { canvasTools } from '../const';
 import { immer } from 'zustand/middleware/immer';
 
+console.log(123);
+
 interface State {
   canvas: HTMLCanvasElement | null;
   currentTool: PaintingTools;
