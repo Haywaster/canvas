@@ -12,7 +12,8 @@
     "style": "stylelint \"**/*.scss\"",
     "style:fix": "stylelint \"**/*.scss\" --fix",
     "format": "prettier --write \"src/**/*.ts*\"",
-    "prepare": "cd .. && husky client/.husky"
+    "prepare": "cd .. && husky client/.husky",
+	  "deploy": "vercel --prod"
   },
   "dependencies": {
     "classnames": "^2.5.1",
