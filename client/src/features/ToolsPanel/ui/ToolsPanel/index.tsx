@@ -7,6 +7,7 @@ import { isPaintingTool } from 'entities/Tool';
 import {
   Brush,
   Circle,
+  ClearAll,
   Eraser,
   Line,
   Rectangle,
@@ -25,6 +26,7 @@ const headerTools: Record<Tools, ReactElement> = {
   eraser: <Eraser />,
   undo: <Undo />,
   redo: <Redo />,
+  clearAll: <ClearAll />,
   save: <Save />
 };
 
@@ -44,13 +46,15 @@ export const ToolsPanel: FC = memo(() => {
 
       if (isPaintingTool(tool)) {
         setCurrentTool(tool);
+      } else {
+        console.log(tool);
       }
     },
     [setCurrentTool]
   );
 
   return (
-    <div className={module.panel}>
+    <>
       {tools.map(([key, icon]) => (
         <Button
           data-key={key}
@@ -63,6 +67,6 @@ export const ToolsPanel: FC = memo(() => {
           {icon}
         </Button>
       ))}
-    </div>
+    </>
   );
 });

@@ -6,7 +6,8 @@ export const tools = [
   'eraser',
   'undo',
   'redo',
-  'save'
+  'save',
+  'clearAll'
 ] as const;
 
 export const paintingTools = [

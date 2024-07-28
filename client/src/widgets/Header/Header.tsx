@@ -6,7 +6,11 @@ import { ToolsPanel, PaintOptionPanel } from 'features/ToolsPanel/ui';
 
 export const Header: FC = memo(() => (
   <header className={module.header}>
-    <ToolsPanel />
-    <PaintOptionPanel />
+    <div className={module.panel}>
+      <ToolsPanel />
+    </div>
+    <div className={module.panel}>
+      <PaintOptionPanel />
+    </div>
   </header>
 ));

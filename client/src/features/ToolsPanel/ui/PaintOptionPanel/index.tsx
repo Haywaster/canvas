@@ -1,4 +1,5 @@
-import { type FC, memo, useState } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { memo, useState } from 'react';
 import module from './PaintOptionPanel.module.scss';
 import type { InputTool, PaintingOptions } from 'entities/Tool';
 import { usePainting } from 'features/Painting';
@@ -28,14 +29,14 @@ export const PaintOptionPanel: FC = memo(() => {
     setOptions(id, value);
   }, 300);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const changeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
     const { id, value } = event.target;
     setVisibleOptions(prev => ({ ...prev, [id]: value }));
     debounce(id as keyof PaintingOptions, value);
   };
 
   return (
-    <div className={module.panel}>
+    <>
       {paintingOptions.map(({ id, label, type, max, min }) => (
         <div key={id} className={module.optionWrapper}>
           <label htmlFor={id}>{label}</label>
@@ -49,6 +50,6 @@ export const PaintOptionPanel: FC = memo(() => {
           />
         </div>
       ))}
-    </div>
+    </>
   );
 });
