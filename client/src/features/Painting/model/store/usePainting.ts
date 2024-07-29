@@ -1,9 +1,9 @@
-import {
+import type {
   PaintingTools,
   PaintingOptions,
-  ActionTools,
-  Canvas
+  ActionTools
 } from 'entities/Tool';
+import { Canvas } from 'entities/Tool';
 import { create } from 'zustand';
 import { canvasTools } from '../const';
 import { immer } from 'zustand/middleware/immer';

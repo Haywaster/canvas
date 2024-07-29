@@ -1,5 +1,6 @@
 import { usePainting } from 'features/Painting';
-import { type FC, memo, MouseEventHandler, useEffect, useRef } from 'react';
+import type { MouseEventHandler } from 'react';
+import { type FC, memo, useEffect, useRef } from 'react';
 
 import module from './Canvas.module.scss';
 
