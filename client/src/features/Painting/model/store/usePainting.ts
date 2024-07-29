@@ -23,7 +23,6 @@ interface Actions {
   makeAction: (tool: ActionTools) => void;
   addImage: (image: string) => void;
   addCanceledImage: (image: string) => void;
-  clearAll: () => void;
 }
 
 const defaultOptions: PaintingOptions = {
@@ -107,11 +106,6 @@ export const usePainting = create<State & Actions>()(
     addCanceledImage: image =>
       set(state => {
         state.canceledImageList.push(image);
-      }),
-    clearAll: () =>
-      set({
-        imageList: [],
-        canceledImageList: []
       })
   }))
 );
