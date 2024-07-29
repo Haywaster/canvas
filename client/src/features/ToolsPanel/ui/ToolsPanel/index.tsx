@@ -33,12 +33,28 @@ const headerTools: Record<Tools, ReactElement> = {
 const tools = Object.entries(headerTools) as [Tools, ReactElement][];
 
 export const ToolsPanel: FC = memo(() => {
-  const { currentTool, setCurrentTool, makeAction } = usePainting(
-    useShallow(({ currentTool, setCurrentTool, makeAction }) => ({
-      currentTool,
-      setCurrentTool,
-      makeAction
-    }))
+  const {
+    currentTool,
+    setCurrentTool,
+    makeAction,
+    imageList,
+    canceledImageList
+  } = usePainting(
+    useShallow(
+      ({
+        currentTool,
+        setCurrentTool,
+        makeAction,
+        imageList,
+        canceledImageList
+      }) => ({
+        currentTool,
+        setCurrentTool,
+        makeAction,
+        imageList,
+        canceledImageList
+      })
+    )
   );
 
   const handleToolChange: MouseEventHandler<HTMLButtonElement> = useCallback(
@@ -54,10 +70,22 @@ export const ToolsPanel: FC = memo(() => {
     [makeAction, setCurrentTool]
   );
 
+  const getDisabled = (key: Tools): boolean => {
+    if (key === 'undo' || key === 'clearAll' || key === 'save') {
+      return imageList.length === 0;
+    }
+    if (key === 'redo') {
+      return canceledImageList.length === 0;
+    }
+
+    return false;
+  };
+
   return (
     <>
       {tools.map(([key, icon]) => (
         <Button
+          disabled={getDisabled(key)}
           data-key={key}
           key={key}
           icon

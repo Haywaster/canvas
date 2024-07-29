@@ -24,7 +24,7 @@ export const Canvas: FC = memo(() => {
       <canvas
         ref={canvasRef}
         className={module.canvas}
-        onMouseDown={addImageHandler}
+        onMouseUp={addImageHandler}
         width={600}
         height={400}
       />

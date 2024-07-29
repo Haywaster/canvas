@@ -8,9 +8,6 @@ import { create } from 'zustand';
 import { canvasTools } from '../const';
 import { immer } from 'zustand/middleware/immer';
 
-const list = [];
-list.length;
-
 interface State {
   canvas: HTMLCanvasElement | null;
   currentTool: PaintingTools;
@@ -60,7 +57,7 @@ export const usePainting = create<State & Actions>()(
         }
       })),
     makeAction: action => {
-      const { canvas: canvasRef, imageList } = getState();
+      const { canvas: canvasRef, imageList, canceledImageList } = getState();
 
       if (canvasRef) {
         const canvas = new Canvas(canvasRef);
@@ -76,8 +73,26 @@ export const usePainting = create<State & Actions>()(
           case 'undo': {
             if (imageList.length > 0) {
               set(state => {
-                const dataUrl = state.imageList.pop();
-                canvas.undo(dataUrl ?? '');
+                const lastCanvasImage = state.imageList.pop() ?? '';
+                state.canceledImageList.push(lastCanvasImage);
+
+                if (state.imageList.length > 0) {
+                  const prevCanvasImage =
+                    state.imageList[state.imageList.length - 1] ?? '';
+                  canvas.undo(prevCanvasImage);
+                } else {
+                  canvas.clearAll();
+                }
+              });
+            }
+            break;
+          }
+          case 'redo': {
+            if (canceledImageList.length > 0) {
+              set(state => {
+                const dataUrl = state.canceledImageList.pop() ?? '';
+                state.imageList.push(dataUrl);
+                canvas.undo(dataUrl);
               });
             }
             break;
