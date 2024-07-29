@@ -64,11 +64,11 @@ export const usePainting = create<State & Actions>()(
 
         switch (action) {
           case 'clearAll':
+            canvas.clearAll();
             set(state => {
               const emptyCanvasImage = canvasRef.toDataURL();
               state.imageList.push(emptyCanvasImage);
             });
-            canvas.clearAll();
             break;
           case 'undo': {
             if (imageList.length > 0) {
