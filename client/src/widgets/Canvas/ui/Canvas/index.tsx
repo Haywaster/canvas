@@ -1,9 +1,11 @@
 import { usePainting } from 'features/Painting';
-import { MouseEventHandler, useState } from 'react';
+import type { MouseEventHandler } from 'react';
+import { useState } from 'react';
 import { type FC, memo, useEffect, useRef } from 'react';
 
 import module from './Canvas.module.scss';
-import { IMouseCoords, LiveCursor } from '../LiveCursor';
+import type { IMouseCoords } from '../LiveCursor';
+import { LiveCursor } from '../LiveCursor';
 
 export const Canvas: FC = memo(() => {
   const [mouseCoords, setMouseCoords] = useState<IMouseCoords | null>(null);
