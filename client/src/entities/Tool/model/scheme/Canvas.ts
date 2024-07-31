@@ -13,7 +13,7 @@ export class Canvas {
     }
   }
 
-  draw(url: string) {
+  drawImage(url: string) {
     const image = new Image();
     image.src = url;
     image.onload = () => {

@@ -23,7 +23,7 @@ export const Canvas: FC = memo(() => {
 
       if (savingImage) {
         const canvas = new CanvasClass(canvasRef.current);
-        canvas.draw(savingImage);
+        canvas.drawImage(savingImage);
       }
 
       setCanvas(canvasRef.current);

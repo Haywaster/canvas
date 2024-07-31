@@ -77,6 +77,8 @@ export const ToolsPanel: FC = memo(() => {
       if (saveImage) {
         return imageList.length === 0 && saveImage === emptyCanvas;
       }
+
+      return imageList.length === 0;
     }
     if (key === 'undo' || key === 'save') {
       return imageList.length === 0;

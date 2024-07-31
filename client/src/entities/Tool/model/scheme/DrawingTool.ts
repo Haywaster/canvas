@@ -27,6 +27,10 @@ export abstract class DrawingTool extends Tool {
       this.down = false;
     };
 
+    this.canvas.onmouseleave = (): void => {
+      this.down = false;
+    };
+
     this.canvas.onmousemove = (event: MouseEvent): void => {
       if (this.down) {
         const x = event.pageX - this.canvas.offsetLeft;

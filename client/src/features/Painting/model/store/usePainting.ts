@@ -6,6 +6,7 @@ import type {
 import { Canvas } from 'entities/Tool';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { emptyCanvas } from 'features/Painting';
 
 interface State {
   canvas: HTMLCanvasElement | null;
@@ -47,7 +48,7 @@ export const usePainting = create<State & Actions>()(
         }
       })),
     makeAction: action => {
-      const { canvas: canvasRef, imageList, canceledImageList } = getState();
+      const { canvas: canvasRef, canceledImageList } = getState();
 
       if (!canvasRef) return;
 
@@ -62,20 +63,24 @@ export const usePainting = create<State & Actions>()(
       };
 
       const undo = () => {
-        if (imageList.length > 0) {
-          set(state => {
-            const lastCanvasImage = state.imageList.pop() ?? '';
-            state.canceledImageList.push(lastCanvasImage);
+        set(state => {
+          const lastCanvasImage = state.imageList.pop() ?? '';
+          state.canceledImageList.push(lastCanvasImage);
 
-            if (state.imageList.length > 0) {
-              const prevCanvasImage =
-                state.imageList[state.imageList.length - 1] ?? '';
-              canvas.draw(prevCanvasImage);
+          if (state.imageList.length > 0) {
+            const prevCanvasImage =
+              state.imageList[state.imageList.length - 1] ?? '';
+            canvas.drawImage(prevCanvasImage);
+          } else {
+            const saveImage = localStorage.getItem('saveImage');
+
+            if (saveImage) {
+              canvas.drawImage(saveImage);
             } else {
               canvas.clearAll();
             }
-          });
-        }
+          }
+        });
       };
 
       const redo = () => {
@@ -83,7 +88,7 @@ export const usePainting = create<State & Actions>()(
           set(state => {
             const dataUrl = state.canceledImageList.pop() ?? '';
             state.imageList.push(dataUrl);
-            canvas.draw(dataUrl);
+            canvas.drawImage(dataUrl);
           });
         }
       };
@@ -91,8 +96,14 @@ export const usePainting = create<State & Actions>()(
       const save = () => {
         set(state => {
           const lastImage = state.imageList.pop() ?? '';
-          canvas.draw(lastImage);
-          localStorage.setItem('saveImage', lastImage);
+          canvas.drawImage(lastImage);
+
+          if (lastImage === emptyCanvas) {
+            localStorage.removeItem('saveImage');
+          } else {
+            localStorage.setItem('saveImage', lastImage);
+          }
+
           state.imageList = [];
           state.canceledImageList = [];
         });
