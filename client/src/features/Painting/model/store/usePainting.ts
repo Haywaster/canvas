@@ -5,7 +5,6 @@ import type {
 } from 'entities/Tool';
 import { Canvas } from 'entities/Tool';
 import { create } from 'zustand';
-import { canvasTools } from '../const';
 import { immer } from 'zustand/middleware/immer';
 
 interface State {
@@ -17,7 +16,7 @@ interface State {
 }
 
 interface Actions {
-  setCanvas: (canvas: HTMLCanvasElement | null) => void;
+  setCanvas: (canvas: HTMLCanvasElement) => void;
   setCurrentTool: (tool: PaintingTools) => void;
   setOptions: (key: keyof PaintingOptions, value: string | number) => void;
   makeAction: (tool: ActionTools) => void;
@@ -38,15 +37,7 @@ export const usePainting = create<State & Actions>()(
     canceledImageList: [],
     currentTool: 'brush',
     options: defaultOptions,
-    setCanvas: (canvas): void => {
-      if (canvas) {
-        const { options, currentTool } = getState();
-
-        const ClassToCreate = canvasTools[currentTool];
-        new ClassToCreate(canvas, options);
-      }
-      set({ canvas });
-    },
+    setCanvas: (canvas): void => set({ canvas }),
     setCurrentTool: (tool): void => set({ currentTool: tool }),
     setOptions: (key, value): void =>
       set(({ options }) => ({
@@ -58,45 +49,68 @@ export const usePainting = create<State & Actions>()(
     makeAction: action => {
       const { canvas: canvasRef, imageList, canceledImageList } = getState();
 
-      if (canvasRef) {
-        const canvas = new Canvas(canvasRef);
+      if (!canvasRef) return;
 
-        switch (action) {
-          case 'clearAll':
-            canvas.clearAll();
-            set(state => {
-              const emptyCanvasImage = canvasRef.toDataURL();
-              state.imageList.push(emptyCanvasImage);
-            });
-            break;
-          case 'undo': {
-            if (imageList.length > 0) {
-              set(state => {
-                const lastCanvasImage = state.imageList.pop() ?? '';
-                state.canceledImageList.push(lastCanvasImage);
+      const canvas = new Canvas(canvasRef);
 
-                if (state.imageList.length > 0) {
-                  const prevCanvasImage =
-                    state.imageList[state.imageList.length - 1] ?? '';
-                  canvas.undo(prevCanvasImage);
-                } else {
-                  canvas.clearAll();
-                }
-              });
+      const clearAll = () => {
+        canvas.clearAll();
+        set(state => {
+          const emptyCanvasImage = canvasRef.toDataURL();
+          state.imageList.push(emptyCanvasImage);
+        });
+      };
+
+      const undo = () => {
+        if (imageList.length > 0) {
+          set(state => {
+            const lastCanvasImage = state.imageList.pop() ?? '';
+            state.canceledImageList.push(lastCanvasImage);
+
+            if (state.imageList.length > 0) {
+              const prevCanvasImage =
+                state.imageList[state.imageList.length - 1] ?? '';
+              canvas.draw(prevCanvasImage);
+            } else {
+              canvas.clearAll();
             }
-            break;
-          }
-          case 'redo': {
-            if (canceledImageList.length > 0) {
-              set(state => {
-                const dataUrl = state.canceledImageList.pop() ?? '';
-                state.imageList.push(dataUrl);
-                canvas.undo(dataUrl);
-              });
-            }
-            break;
-          }
+          });
         }
+      };
+
+      const redo = () => {
+        if (canceledImageList.length > 0) {
+          set(state => {
+            const dataUrl = state.canceledImageList.pop() ?? '';
+            state.imageList.push(dataUrl);
+            canvas.draw(dataUrl);
+          });
+        }
+      };
+
+      const save = () => {
+        set(state => {
+          const lastImage = state.imageList.pop() ?? '';
+          canvas.draw(lastImage);
+          localStorage.setItem('saveImage', lastImage);
+          state.imageList = [];
+          state.canceledImageList = [];
+        });
+      };
+
+      switch (action) {
+        case 'clearAll':
+          clearAll();
+          break;
+        case 'undo':
+          undo();
+          break;
+        case 'redo':
+          redo();
+          break;
+        case 'save':
+          save();
+          break;
       }
     },
     addImage: image =>

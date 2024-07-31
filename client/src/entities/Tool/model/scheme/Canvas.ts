@@ -13,7 +13,7 @@ export class Canvas {
     }
   }
 
-  undo(url: string) {
+  draw(url: string) {
     const image = new Image();
     image.src = url;
     image.onload = () => {

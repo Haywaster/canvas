@@ -15,7 +15,7 @@ import {
   Save,
   Undo
 } from 'shared/assets/icons';
-import { usePainting } from 'features/Painting';
+import { emptyCanvas, usePainting } from 'features/Painting';
 import { useShallow } from 'zustand/react/shallow';
 
 const headerTools: Record<Tools, ReactElement> = {
@@ -71,7 +71,14 @@ export const ToolsPanel: FC = memo(() => {
   );
 
   const getDisabled = (key: Tools): boolean => {
-    if (key === 'undo' || key === 'clearAll' || key === 'save') {
+    if (key === 'clearAll') {
+      const saveImage = localStorage.getItem('saveImage');
+
+      if (saveImage) {
+        return imageList.length === 0 && saveImage === emptyCanvas;
+      }
+    }
+    if (key === 'undo' || key === 'save') {
       return imageList.length === 0;
     }
     if (key === 'redo') {
