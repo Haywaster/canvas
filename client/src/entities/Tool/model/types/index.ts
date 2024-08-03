@@ -1,5 +1,5 @@
 import type { paintingTools, actionTools } from '../const';
-import type { HTMLInputTypeAttribute, InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes } from 'react';
 
 export type ActionTools = (typeof actionTools)[number];
 export type PaintingTools = (typeof paintingTools)[number];
@@ -14,5 +14,4 @@ export interface PaintingOptions {
 export interface InputTool extends InputHTMLAttributes<HTMLInputElement> {
   id: keyof PaintingOptions;
   label: string;
-  type: HTMLInputTypeAttribute;
 }

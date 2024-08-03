@@ -15,7 +15,7 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactElement;
 }
 
-export const Button: FC<IProps> = memo(props => {
+export const Index: FC<IProps> = memo(props => {
   const {
     icon,
     children,

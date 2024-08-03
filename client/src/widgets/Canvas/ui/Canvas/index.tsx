@@ -8,6 +8,8 @@ import module from './Canvas.module.scss';
 import type { IMouseCoords } from '../LiveCursor';
 import { LiveCursor } from '../LiveCursor';
 
+const diameterCoef = 2;
+
 export const Canvas: FC = memo(() => {
   const [mouseCoords, setMouseCoords] = useState<IMouseCoords | null>(null);
 
@@ -63,7 +65,10 @@ export const Canvas: FC = memo(() => {
         width={600}
         height={400}
       />
-      <LiveCursor cords={mouseCoords} diameter={options.strokeWidth * 2} />
+      <LiveCursor
+        cords={mouseCoords}
+        diameter={options.strokeWidth * diameterCoef}
+      />
     </main>
   );
 });

@@ -14,7 +14,7 @@ export abstract class Tool extends Canvas {
     this.destroy();
   }
 
-  destroy(): void {
+  private destroy(): void {
     this.canvas.onmousemove = null;
     this.canvas.onmousedown = null;
     this.canvas.onmouseup = null;

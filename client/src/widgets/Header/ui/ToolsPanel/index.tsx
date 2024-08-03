@@ -1,39 +1,12 @@
-import type { MouseEventHandler, ReactElement } from 'react';
+import type { MouseEventHandler } from 'react';
 import { type FC, memo, useCallback } from 'react';
 import module from './ToolsPanel.module.scss';
-import { Button } from 'shared/ui/Button';
+import { Index } from 'shared/ui/Button';
 import type { Tools } from 'entities/Tool';
 import { isPaintingTool } from 'entities/Tool';
-import {
-  Brush,
-  Circle,
-  ClearAll,
-  Download,
-  Eraser,
-  Line,
-  Rectangle,
-  Redo,
-  Save,
-  Undo
-} from 'shared/assets/icons';
-import { emptyCanvas, usePainting } from 'features/Painting';
+import { emptyCanvas, usePainting, useMakeAction } from 'features/Painting';
 import { useShallow } from 'zustand/react/shallow';
-import { useMakeAction } from 'features/Painting/lib/hooks';
-
-const headerTools: Record<Tools, ReactElement> = {
-  brush: <Brush />,
-  line: <Line />,
-  rectangle: <Rectangle />,
-  circle: <Circle />,
-  eraser: <Eraser />,
-  undo: <Undo />,
-  redo: <Redo />,
-  clearAll: <ClearAll />,
-  save: <Save />,
-  download: <Download />
-};
-
-const tools = Object.entries(headerTools) as [Tools, ReactElement][];
+import { tools } from 'widgets/Header/model';
 
 export const ToolsPanel: FC = memo(() => {
   const { currentTool, setCurrentTool, imageList, canceledImageList } =
@@ -86,8 +59,8 @@ export const ToolsPanel: FC = memo(() => {
 
   return (
     <>
-      {tools.map(([key, icon]) => (
-        <Button
+      {tools.map(([key, Icon]) => (
+        <Index
           disabled={getDisabled(key)}
           data-key={key}
           key={key}
@@ -96,8 +69,8 @@ export const ToolsPanel: FC = memo(() => {
           className={module[key]}
           onClick={handleToolChange}
         >
-          {icon}
-        </Button>
+          <Icon />
+        </Index>
       ))}
     </>
   );

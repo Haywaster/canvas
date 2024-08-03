@@ -12,8 +12,10 @@ interface IProps {
   diameter: number;
 }
 
+const radiusCoef = 2;
+
 export const LiveCursor: FC<IProps> = memo(props => {
-  const { cords, diameter = 16 } = props;
+  const { cords, diameter } = props;
 
   if (!cords) {
     return null;
@@ -23,8 +25,8 @@ export const LiveCursor: FC<IProps> = memo(props => {
     <div
       className={module.liveCursor}
       style={{
-        left: cords.x - diameter / 2,
-        top: cords.y - diameter / 2,
+        left: cords.x - diameter / radiusCoef,
+        top: cords.y - diameter / radiusCoef,
         width: diameter,
         height: diameter
       }}
