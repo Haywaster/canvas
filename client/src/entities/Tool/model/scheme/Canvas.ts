@@ -23,4 +23,12 @@ export class Canvas {
       }
     };
   }
+
+  download() {
+    const image = this.canvas.toDataURL();
+    const link = document.createElement('a');
+    link.download = 'image.png';
+    link.href = image;
+    link.click();
+  }
 }

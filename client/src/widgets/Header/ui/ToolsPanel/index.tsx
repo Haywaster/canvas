@@ -8,6 +8,7 @@ import {
   Brush,
   Circle,
   ClearAll,
+  Download,
   Eraser,
   Line,
   Rectangle,
@@ -17,6 +18,7 @@ import {
 } from 'shared/assets/icons';
 import { emptyCanvas, usePainting } from 'features/Painting';
 import { useShallow } from 'zustand/react/shallow';
+import { useMakeAction } from 'features/Painting/lib/hooks';
 
 const headerTools: Record<Tools, ReactElement> = {
   brush: <Brush />,
@@ -27,35 +29,25 @@ const headerTools: Record<Tools, ReactElement> = {
   undo: <Undo />,
   redo: <Redo />,
   clearAll: <ClearAll />,
-  save: <Save />
+  save: <Save />,
+  download: <Download />
 };
 
 const tools = Object.entries(headerTools) as [Tools, ReactElement][];
 
 export const ToolsPanel: FC = memo(() => {
-  const {
-    currentTool,
-    setCurrentTool,
-    makeAction,
-    imageList,
-    canceledImageList
-  } = usePainting(
-    useShallow(
-      ({
-        currentTool,
-        setCurrentTool,
-        makeAction,
-        imageList,
-        canceledImageList
-      }) => ({
-        currentTool,
-        setCurrentTool,
-        makeAction,
-        imageList,
-        canceledImageList
-      })
-    )
-  );
+  const { currentTool, setCurrentTool, imageList, canceledImageList } =
+    usePainting(
+      useShallow(
+        ({ currentTool, setCurrentTool, imageList, canceledImageList }) => ({
+          currentTool,
+          setCurrentTool,
+          imageList,
+          canceledImageList
+        })
+      )
+    );
+  const makeAction = useMakeAction();
 
   const handleToolChange: MouseEventHandler<HTMLButtonElement> = useCallback(
     event => {
@@ -64,14 +56,16 @@ export const ToolsPanel: FC = memo(() => {
       if (isPaintingTool(tool)) {
         setCurrentTool(tool);
       } else {
-        makeAction(tool);
+        if (makeAction) {
+          makeAction(tool);
+        }
       }
     },
     [makeAction, setCurrentTool]
   );
 
   const getDisabled = (key: Tools): boolean => {
-    if (key === 'clearAll') {
+    if (key === 'clearAll' || key === 'download') {
       const saveImage = localStorage.getItem('saveImage');
 
       if (saveImage) {

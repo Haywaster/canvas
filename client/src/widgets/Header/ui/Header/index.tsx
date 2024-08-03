@@ -2,7 +2,8 @@ import type { FC } from 'react';
 import { memo } from 'react';
 
 import module from './Header.module.scss';
-import { ToolsPanel, PaintOptionPanel } from 'features/ToolsPanel';
+import { ToolsPanel } from '../ToolsPanel';
+import { PaintOptionPanel } from '../PaintOptionPanel';
 
 const panels: FC[] = [ToolsPanel, PaintOptionPanel];
 

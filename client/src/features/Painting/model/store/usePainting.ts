@@ -1,12 +1,5 @@
-import type {
-  PaintingTools,
-  PaintingOptions,
-  ActionTools
-} from 'entities/Tool';
-import { Canvas } from 'entities/Tool';
+import type { PaintingTools, PaintingOptions } from 'entities/Tool';
 import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
-import { emptyCanvas } from 'features/Painting';
 
 interface State {
   canvas: HTMLCanvasElement | null;
@@ -20,9 +13,9 @@ interface Actions {
   setCanvas: (canvas: HTMLCanvasElement) => void;
   setCurrentTool: (tool: PaintingTools) => void;
   setOptions: (key: keyof PaintingOptions, value: string | number) => void;
-  makeAction: (tool: ActionTools) => void;
   addImage: (image: string) => void;
   addCanceledImage: (image: string) => void;
+  reset: () => void;
 }
 
 const defaultOptions: PaintingOptions = {
@@ -31,106 +24,23 @@ const defaultOptions: PaintingOptions = {
   fillColor: '#ffffff'
 };
 
-export const usePainting = create<State & Actions>()(
-  immer((set, getState) => ({
-    canvas: null,
-    imageList: [],
-    canceledImageList: [],
-    currentTool: 'brush',
-    options: defaultOptions,
-    setCanvas: (canvas): void => set({ canvas }),
-    setCurrentTool: (tool): void => set({ currentTool: tool }),
-    setOptions: (key, value): void =>
-      set(({ options }) => ({
-        options: {
-          ...options,
-          [key]: value
-        }
-      })),
-    makeAction: action => {
-      const { canvas: canvasRef, canceledImageList } = getState();
-
-      if (!canvasRef) return;
-
-      const canvas = new Canvas(canvasRef);
-
-      const clearAll = () => {
-        canvas.clearAll();
-        set(state => {
-          const emptyCanvasImage = canvasRef.toDataURL();
-          state.imageList.push(emptyCanvasImage);
-        });
-      };
-
-      const undo = () => {
-        set(state => {
-          const lastCanvasImage = state.imageList.pop() ?? '';
-          state.canceledImageList.push(lastCanvasImage);
-
-          if (state.imageList.length > 0) {
-            const prevCanvasImage =
-              state.imageList[state.imageList.length - 1] ?? '';
-            canvas.drawImage(prevCanvasImage);
-          } else {
-            const saveImage = localStorage.getItem('saveImage');
-
-            if (saveImage) {
-              canvas.drawImage(saveImage);
-            } else {
-              canvas.clearAll();
-            }
-          }
-        });
-      };
-
-      const redo = () => {
-        if (canceledImageList.length > 0) {
-          set(state => {
-            const dataUrl = state.canceledImageList.pop() ?? '';
-            state.imageList.push(dataUrl);
-            canvas.drawImage(dataUrl);
-          });
-        }
-      };
-
-      const save = () => {
-        set(state => {
-          const lastImage = state.imageList.pop() ?? '';
-          canvas.drawImage(lastImage);
-
-          if (lastImage === emptyCanvas) {
-            localStorage.removeItem('saveImage');
-          } else {
-            localStorage.setItem('saveImage', lastImage);
-          }
-
-          state.imageList = [];
-          state.canceledImageList = [];
-        });
-      };
-
-      switch (action) {
-        case 'clearAll':
-          clearAll();
-          break;
-        case 'undo':
-          undo();
-          break;
-        case 'redo':
-          redo();
-          break;
-        case 'save':
-          save();
-          break;
+export const usePainting = create<State & Actions>()(set => ({
+  canvas: null,
+  imageList: [],
+  canceledImageList: [],
+  currentTool: 'brush',
+  options: defaultOptions,
+  setCanvas: (canvas): void => set({ canvas }),
+  setCurrentTool: (tool): void => set({ currentTool: tool }),
+  setOptions: (key, value): void =>
+    set(({ options }) => ({
+      options: {
+        ...options,
+        [key]: value
       }
-    },
-    addImage: image =>
-      set(state => {
-        state.imageList.push(image);
-      }),
-    addCanceledImage: image =>
-      set(state => {
-        state.canceledImageList.push(image);
-      })
-  }))
-);
+    })),
+  addImage: image => set(state => ({ imageList: [...state.imageList, image] })),
+  addCanceledImage: image =>
+    set(state => ({ canceledImageList: [...state.canceledImageList, image] })),
+  reset: () => set({ imageList: [], canceledImageList: [] })
+}));
