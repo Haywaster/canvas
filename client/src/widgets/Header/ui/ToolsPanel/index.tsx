@@ -1,7 +1,7 @@
 import type { MouseEventHandler } from 'react';
 import { type FC, memo, useCallback } from 'react';
 import module from './ToolsPanel.module.scss';
-import { Index } from 'shared/ui/Button';
+import { Button } from 'shared/ui/Button';
 import type { Tools } from 'entities/Tool';
 import { isPaintingTool } from 'entities/Tool';
 import { emptyCanvas, usePainting, useMakeAction } from 'features/Painting';
@@ -60,7 +60,7 @@ export const ToolsPanel: FC = memo(() => {
   return (
     <>
       {tools.map(([key, Icon]) => (
-        <Index
+        <Button
           disabled={getDisabled(key)}
           data-key={key}
           key={key}
@@ -70,7 +70,7 @@ export const ToolsPanel: FC = memo(() => {
           onClick={handleToolChange}
         >
           <Icon />
-        </Index>
+        </Button>
       ))}
     </>
   );

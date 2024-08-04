@@ -1,12 +1,13 @@
 import { type FC } from 'react';
-import { Canvas } from 'widgets/Canvas/ui/Canvas';
-import { Header } from 'widgets/Header/ui/Header';
+import { Welcome } from 'widgets/Welcome';
+import video from './video.webm';
+import module from './Main.module.scss';
 
 export const Main: FC = () => {
   return (
     <>
-      <Header />
-      <Canvas />
+      <video autoPlay muted loop src={video} className={module.bgVideo} />
+      <Welcome />
     </>
   );
 };
