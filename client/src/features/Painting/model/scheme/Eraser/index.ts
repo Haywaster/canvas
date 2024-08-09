@@ -1,13 +1,13 @@
 import { Brush } from '../Brush';
-import type { PaintingOptions } from 'entities/Tool';
+import type { ICanvasBaseConfig } from 'features/Connection';
 
 export class Eraser extends Brush {
   static draw(
     context: CanvasRenderingContext2D | null,
-    x: number,
-    y: number,
-    options: PaintingOptions
+    config: ICanvasBaseConfig
   ): void {
+    const { x, y, options } = config;
+
     if (context) {
       context.lineTo(x, y);
       context.stroke();

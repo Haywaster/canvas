@@ -1,5 +1,6 @@
 import type { PaintingOptions } from 'entities/Tool';
 import { Shape } from 'entities/Tool';
+import type { ICanvasExtendedConfig } from 'features/Connection';
 
 const square = 2;
 
@@ -14,16 +15,11 @@ export class Circle extends Shape {
     this.listen('circle');
   }
 
-  // eslint-disable-next-line max-params
   static draw(
     context: CanvasRenderingContext2D | null,
-    x: number,
-    y: number,
-    options: PaintingOptions,
-    startX: number,
-    startY: number,
-    saved: string
+    config: ICanvasExtendedConfig
   ): void {
+    const { x, y, options, startX, startY, saved } = config;
     const radius = Math.sqrt((x - startX) ** square + (y - startY) ** square);
 
     const img = new Image();

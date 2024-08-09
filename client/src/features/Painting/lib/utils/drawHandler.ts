@@ -1,41 +1,47 @@
-import type { ICanvasConfig, IConnection } from 'features/Connection';
+import type { ICanvasBaseConfig, IDrawConnection } from 'features/Connection';
 import { Brush, Circle, Eraser, Line, Rectangle } from 'features/Painting';
 import type { PaintingTools } from 'entities/Tool';
 
 const brushPainting = (
   currentTool: PaintingTools,
   context: CanvasRenderingContext2D,
-  canvasConfig: ICanvasConfig
-) => {
-  const { x, y, options } = canvasConfig;
-
+  canvasConfig: ICanvasBaseConfig
+): void => {
   if (currentTool === 'brush') {
-    return Brush.draw(context, x, y, options);
+    return Brush.draw(context, canvasConfig);
   }
 
   if (currentTool === 'eraser') {
-    return Eraser.draw(context, x, y, options);
+    return Eraser.draw(context, canvasConfig);
+  }
+};
+
+const makePaintAction = (
+  currentTool: PaintingTools,
+  context: CanvasRenderingContext2D,
+  canvasConfig: IDrawConnection['figure']
+) => {
+  switch (canvasConfig.name) {
+    case 'brush':
+      return brushPainting(currentTool, context, canvasConfig);
+    case 'line':
+      return Line.draw(context, canvasConfig);
+    case 'rectangle':
+      return Rectangle.draw(context, canvasConfig);
+    case 'circle':
+      return Circle.draw(context, canvasConfig);
+    case 'finish':
+      return context.beginPath();
   }
 };
 
 export const drawHandler = (
-  data: IConnection,
+  data: IDrawConnection,
   canvas: HTMLCanvasElement | null,
   currentTool: PaintingTools
 ) => {
   const context = canvas?.getContext('2d');
   if (!context) return;
 
-  const { x, y, startX = 0, startY = 0, saved = '', options } = data.figure;
-
-  const actions = {
-    brush: () => brushPainting(currentTool, context, data.figure),
-    line: () => Line.draw(context, x, y, options, startX, startY, saved),
-    rectangle: () =>
-      Rectangle.draw(context, x, y, options, startX, startY, saved),
-    circle: () => Circle.draw(context, x, y, options, startX, startY, saved),
-    finish: () => context.beginPath()
-  };
-
-  actions[data.figure.name]();
+  makePaintAction(currentTool, context, data.figure);
 };

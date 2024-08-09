@@ -1,4 +1,5 @@
-import { DrawingTool, type PaintingOptions } from 'entities/Tool';
+import { DrawingTool } from 'entities/Tool';
+import type { ICanvasExtendedConfig, IConnection } from 'features/Connection';
 
 export class Line extends DrawingTool {
   private startX: number = 0;
@@ -20,39 +21,34 @@ export class Line extends DrawingTool {
         const x = event.pageX - this.canvas.offsetLeft;
         const y = event.pageY - this.canvas.offsetTop;
 
-        this.socket.send(
-          JSON.stringify({
-            id: this.sessionId,
-            method: 'draw',
-            figure: {
-              name: 'line',
-              x,
-              y,
-              options: {
-                strokeColor: this.strokeColor,
-                strokeWidth: this.strokeWidth,
-                fillColor: this.fillColor
-              },
-              startX: this.startX,
-              startY: this.startY,
-              saved: this.saved
-            }
-          })
-        );
+        const data: IConnection = {
+          id: this.sessionId,
+          method: 'draw',
+          figure: {
+            name: 'line',
+            x,
+            y,
+            options: {
+              strokeColor: this.strokeColor,
+              strokeWidth: this.strokeWidth,
+              fillColor: this.fillColor
+            },
+            startX: this.startX,
+            startY: this.startY,
+            saved: this.saved || ''
+          }
+        };
+
+        this.socket.send(JSON.stringify(data));
       }
     };
   }
 
-  // eslint-disable-next-line max-params
   static draw(
     context: CanvasRenderingContext2D | null,
-    x: number,
-    y: number,
-    options: PaintingOptions,
-    startX: number,
-    startY: number,
-    saved: string
+    config: ICanvasExtendedConfig
   ): void {
+    const { x, y, options, startX, startY, saved } = config;
     const img = new Image();
 
     if (saved) {

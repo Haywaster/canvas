@@ -1,5 +1,6 @@
 import type { PaintingOptions } from 'entities/Tool';
 import { Shape } from 'entities/Tool';
+import type { ICanvasExtendedConfig } from 'features/Connection';
 
 export class Rectangle extends Shape {
   constructor(
@@ -11,16 +12,13 @@ export class Rectangle extends Shape {
     super(canvas, socket, sessionId, options);
     this.listen('rectangle');
   }
-  // eslint-disable-next-line max-params
+
   static draw(
     context: CanvasRenderingContext2D | null,
-    x: number,
-    y: number,
-    options: PaintingOptions,
-    startX: number,
-    startY: number,
-    saved: string
+    config: ICanvasExtendedConfig
   ): void {
+    const { x, y, options, startX, startY, saved } = config;
+
     const rectWidth = x - startX;
     const rectHeight = y - startY;
 

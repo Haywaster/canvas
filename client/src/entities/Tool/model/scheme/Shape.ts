@@ -1,5 +1,6 @@
 import { Tool } from './Tool';
 import type { PaintingTools } from 'entities/Tool';
+import type { IConnection } from 'features/Connection';
 
 export class Shape extends Tool {
   protected down: boolean = false;
@@ -24,25 +25,25 @@ export class Shape extends Tool {
         const x = event.pageX - this.canvas.offsetLeft;
         const y = event.pageY - this.canvas.offsetTop;
 
-        this.socket.send(
-          JSON.stringify({
-            id: this.sessionId,
-            method: 'draw',
-            figure: {
-              name: tool,
-              x,
-              y,
-              options: {
-                strokeColor: this.strokeColor,
-                strokeWidth: this.strokeWidth,
-                fillColor: this.fillColor
-              },
-              startX: this.startX,
-              startY: this.startY,
-              saved: this.saved
-            }
-          })
-        );
+        const data: IConnection = {
+          id: this.sessionId,
+          method: 'draw',
+          figure: {
+            name: tool,
+            x,
+            y,
+            options: {
+              strokeColor: this.strokeColor,
+              strokeWidth: this.strokeWidth,
+              fillColor: this.fillColor
+            },
+            startX: this.startX,
+            startY: this.startY,
+            saved: this.saved || ''
+          }
+        };
+
+        this.socket.send(JSON.stringify(data));
       }
     };
   }
