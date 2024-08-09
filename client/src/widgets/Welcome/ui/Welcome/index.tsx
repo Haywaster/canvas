@@ -3,10 +3,10 @@ import { Copy, Tick } from '../../assets';
 import module from './Welcome.module.scss';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { userID } from 'entities/User';
 
-const radix = 16;
 const timeout = 3000;
-const link = `${location.origin}/session-${Date.now().toString(radix)}`;
+const link = `${location.origin}/session-${userID}`;
 
 export const Welcome = () => {
   const [isCopied, setIsCopied] = useState<boolean>(false);

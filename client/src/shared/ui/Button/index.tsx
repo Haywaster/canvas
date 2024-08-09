@@ -12,7 +12,7 @@ interface IProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: boolean;
   size?: BtnSize;
   mode?: BtnMode;
-  children: ReactElement;
+  children: ReactElement | string;
 }
 
 export const Button: FC<IProps> = memo(props => {

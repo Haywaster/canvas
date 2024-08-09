@@ -1,9 +1,13 @@
 export class Canvas {
   protected canvas: HTMLCanvasElement;
   protected context: CanvasRenderingContext2D | null;
+  protected socket: WebSocket;
+  protected sessionId: string;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, socket: WebSocket, sessionId: string) {
     this.canvas = canvas;
+    this.socket = socket;
+    this.sessionId = sessionId;
     this.context = canvas.getContext('2d');
   }
 

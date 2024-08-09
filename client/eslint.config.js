@@ -57,7 +57,7 @@ export default [
       ],
       'react/self-closing-comp': ['error', { component: true, html: true }],
       'max-lines': ['warn', { max: 124 }],
-      'max-params': ['error', 3],
+      'max-params': ['error', 4],
       '@typescript-eslint/consistent-type-imports': [
         'warn',
         { prefer: 'type-imports', fixStyle: 'separate-type-imports' }

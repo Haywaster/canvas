@@ -6,8 +6,13 @@ export abstract class Tool extends Canvas {
   protected strokeWidth: number;
   protected fillColor: string;
 
-  protected constructor(canvas: HTMLCanvasElement, options: PaintingOptions) {
-    super(canvas);
+  protected constructor(
+    canvas: HTMLCanvasElement,
+    socket: WebSocket,
+    sessionId: string,
+    options: PaintingOptions
+  ) {
+    super(canvas, socket, sessionId);
     this.strokeColor = options.strokeColor;
     this.strokeWidth = options.strokeWidth;
     this.fillColor = options.fillColor;

@@ -3,10 +3,10 @@ import type { MouseEventHandler } from 'react';
 import { useState } from 'react';
 import { type FC, memo, useEffect, useRef } from 'react';
 
-import { Canvas as CanvasClass } from 'entities/Tool';
 import module from './Canvas.module.scss';
 import type { IMouseCoords } from '../LiveCursor';
 import { LiveCursor } from '../LiveCursor';
+import { useConnection } from 'features/Connection';
 
 const diameterCoef = 2;
 
@@ -17,27 +17,23 @@ export const Canvas: FC = memo(() => {
   const options = usePainting(state => state.options);
   const currentTool = usePainting(state => state.currentTool);
   const addImage = usePainting(state => state.addImage);
+  const socket = useConnection(state => state.socket);
+  const sessionId = useConnection(state => state.sessionId);
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (canvasRef.current) {
-      const savingImage = localStorage.getItem('saveImage');
-
-      if (savingImage) {
-        const canvas = new CanvasClass(canvasRef.current);
-        canvas.drawImage(savingImage);
-      }
-
       setCanvas(canvasRef.current);
     }
   }, [setCanvas]);
 
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef.current && socket && sessionId) {
       const ClassToCreate = canvasTools[currentTool];
-      new ClassToCreate(canvasRef.current, options);
+      new ClassToCreate(canvasRef.current, socket, sessionId, options);
     }
-  }, [options, currentTool]);
+  }, [options, currentTool, socket, sessionId]);
 
   const addImageHandler: MouseEventHandler<HTMLCanvasElement> = (e): void => {
     addImage(e.currentTarget.toDataURL());
