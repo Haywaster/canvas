@@ -42,6 +42,5 @@ export const drawHandler = (
 ) => {
   const context = canvas?.getContext('2d');
   if (!context) return;
-
   makePaintAction(currentTool, context, data.figure);
 };

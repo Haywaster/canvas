@@ -1,31 +1,27 @@
-import { useCallback } from 'react';
 import { type FC, useState } from 'react';
 import { Canvas } from 'widgets/Canvas/ui/Canvas';
 import { Header } from 'widgets/Header/ui/Header';
-import { useParams } from 'react-router-dom';
-import { type IDrawConnection, UsernameModal } from 'features/Connection';
+import type { IConnection } from 'features/Connection';
+import { UsernameModal } from 'features/Connection';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { drawHandler, usePainting } from 'features/Painting';
 import { useWebSocket } from 'features/Connection';
 
 export const Paint: FC = () => {
-  const { id } = useParams();
   const [username, setUsername] = useState<string>('');
 
-  const canvas = usePainting(state => state.canvas);
-  const currentTool = usePainting(state => state.currentTool);
-
-  const draw = useCallback(
-    (data: IDrawConnection) => drawHandler(data, canvas, currentTool),
-    [canvas, currentTool]
-  );
-
-  useWebSocket(id, username, draw);
+  const { socket, sessionId } = useWebSocket();
 
   const onComeIn = (value: string): void => {
-    if (value) {
+    if (value && socket && sessionId) {
       setUsername(value);
+
+      const userData: IConnection = {
+        id: sessionId,
+        username: value,
+        method: 'connection'
+      };
+      socket.send(JSON.stringify(userData));
     }
   };
 

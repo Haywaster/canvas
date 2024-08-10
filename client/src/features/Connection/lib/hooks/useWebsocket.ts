@@ -1,39 +1,63 @@
-import type { IConnection, IDrawConnection } from 'features/Connection';
-import { useConnection } from 'features/Connection';
-import { useEffect } from 'react';
+import type { IConnection } from 'features/Connection';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { canvasTools, drawHandler, usePainting } from 'features/Painting';
 
-export const useWebSocket = (
-  id: string | undefined,
-  username: string,
-  drawHandler: (data: IDrawConnection) => void
-) => {
-  const setSocket = useConnection(state => state.setSocket);
-  const setSessionId = useConnection(state => state.setSessionId);
+interface IUseWebSocket {
+  socket: WebSocket | null;
+  sessionId: string | null;
+}
+
+export const useWebSocket = (): IUseWebSocket => {
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [socketData, setSocketData] = useState<IConnection | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const { id } = useParams();
+
+  const currentTool = usePainting(state => state.currentTool);
+  const canvas = usePainting(state => state.canvas);
+  const options = usePainting(state => state.options);
 
   useEffect(() => {
-    if (username && id) {
-      const socket = new WebSocket('ws://localhost:5000');
-      setSocket(socket);
+    const socket = new WebSocket('ws://localhost:5000');
+    setSocket(socket);
+
+    socket.onmessage = event => {
+      const data = JSON.parse(event.data) as IConnection;
+      setSocketData(data);
+    };
+
+    return () => {
+      socket.close();
+    };
+  }, [setSocket, setSocketData]);
+
+  useEffect(() => {
+    if (id) {
       setSessionId(id);
-
-      socket.onopen = () => {
-        socket.send(JSON.stringify({ id, username, method: 'connection' }));
-      };
-
-      socket.onmessage = event => {
-        const data = JSON.parse(event.data) as IConnection;
-
-        if (data.method === 'connection' && data.username === username) {
-          toast.info(`Пользователь ${data.username} подключился`);
-        } else if (data.method === 'draw') {
-          drawHandler(data);
-        }
-      };
-
-      return () => {
-        socket.close();
-      };
     }
-  }, [id, setSessionId, setSocket, username]);
+  }, [id, setSessionId]);
+
+  useEffect(() => {
+    if (socketData) {
+      if (socketData.method === 'connection') {
+        toast.info(`Пользователь ${socketData.username} подключился`);
+      } else {
+        drawHandler(socketData, canvas, currentTool);
+      }
+    }
+  }, [canvas, currentTool, socketData]);
+
+  useEffect(() => {
+    if (canvas && socket && sessionId) {
+      const ClassToCreate = canvasTools[currentTool];
+      new ClassToCreate(canvas, socket, sessionId, options);
+    }
+  }, [options, currentTool, socket, sessionId, canvas]);
+
+  return {
+    socket,
+    sessionId
+  };
 };
