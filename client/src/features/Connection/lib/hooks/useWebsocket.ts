@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { canvasTools, drawHandler, usePainting } from 'features/Painting';
+import { API_URL } from 'shared/const';
 
 interface IUseWebSocket {
   socket: WebSocket | null;
@@ -20,7 +21,7 @@ export const useWebSocket = (): IUseWebSocket => {
   const options = usePainting(state => state.options);
 
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:5000');
+    const socket = new WebSocket(API_URL);
     setSocket(socket);
 
     socket.onmessage = event => {
