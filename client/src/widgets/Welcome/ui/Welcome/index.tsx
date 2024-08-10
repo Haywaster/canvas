@@ -22,7 +22,7 @@ export const Welcome = () => {
   return (
     <div className={module.wrapper}>
       <h1>
-        Добро пожаловать в <span>Paint online!</span>
+        Добро пожаловать в <span>{import.meta.env.VITE_APP_TITLE}</span>
       </h1>
       <h3>Отправь ссылку другу и наслаждайтесь рисованием вместе!</h3>
       <div className={module.link}>
