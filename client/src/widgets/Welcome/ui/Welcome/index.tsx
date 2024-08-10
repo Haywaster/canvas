@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { userID } from 'entities/User';
 
 const timeout = 3000;
-const link = `${location.origin}/session-${userID}`;
+const link = `${location.origin}/session/${userID}`;
 
 export const Welcome = () => {
   const [isCopied, setIsCopied] = useState<boolean>(false);

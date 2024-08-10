@@ -4,7 +4,7 @@ import type { RouteObject } from 'react-router-dom';
 
 enum RouterPath {
   Main = '/',
-  Paint = '/:id'
+  Paint = '/session/:id'
 }
 
 export const AppRouter: RouteObject[] = [
