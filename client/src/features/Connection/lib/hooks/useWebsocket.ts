@@ -21,6 +21,8 @@ export const useWebSocket = (): IUseWebSocket => {
   const options = usePainting(state => state.options);
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(id, API_URL);
     const socket = new WebSocket(API_URL);
     setSocket(socket);
 
