@@ -4,9 +4,9 @@ Only free solutions were used, so locally it literally flies!
 
 ## Installation and startup
 1. Install **bun** on your computer. Next steps:
-* `bun` - Dependency installation
-* `bun dev` - Simultaneous launch of project and server
-2. Rename the environment variables file **.env.example** to **.env.local**
+* `bun` - Dependency installation (_**client** and **server**_)
+* `bun dev` - Simultaneous launch of project and server (_only **client** root_)
+2. Rename the environment variables file **.env.example** to **.env.local** (_his location in **client** root_)
 3. Once launched, you can go to http://localhost:3000/ and enjoy!
 
 ## Stack
